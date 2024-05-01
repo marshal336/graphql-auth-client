@@ -1,0 +1,14 @@
+
+query getProfile($id: String!) {
+  profile(id: $id) {
+    id
+    email
+  }
+}
+mutation signUp($input: UserInputSigUp!) {
+  signUp(input: $input) {
+    id 
+    email 
+    username
+  }
+}

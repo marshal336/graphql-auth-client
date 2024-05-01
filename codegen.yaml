@@ -1,13 +1,12 @@
-overwrite: true 
-ignoreNoDocuments: true
-schema: http://localhost:5500
-documents: './src/gql/functions/**/*.gql'
-generates: 
-  "./src/gql/_generated/index.ts":
+overwrite: true
+schema: "http://localhost:5500/graphql"
+documents: ./src/gql/functions/**/*.gql
+generates:
+  src/gql/_generated/index.ts:
     plugins: 
       - typescript
       - typescript-operations
       - typescript-react-apollo 
-config:
+config: 
   withHOC: true
-  hooks: true
+  withHooks: true
