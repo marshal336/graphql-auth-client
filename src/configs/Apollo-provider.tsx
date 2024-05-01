@@ -7,6 +7,7 @@ const ApolloClientProvider = ({ children }: { children: React.ReactNode }) => {
     const client = new ApolloClient({
         uri: 'http://localhost:5500/graphql',
         cache: new InMemoryCache(),
+        credentials: 'include',
     });
     return (
         <ApolloProvider client={client}>

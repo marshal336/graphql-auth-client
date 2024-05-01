@@ -9,14 +9,13 @@ import { Input } from '~/components/ui/input'
 import { Card, CardHeader, CardTitle } from '~/components/ui/card'
 import { Button } from '~/components/ui/button'
 import { PAGES } from '~/utils/page.enum'
-import { useSignUpMutation } from '~/gql/_generated'
+import { useSignInMutation, useSignUpMutation } from '~/gql/_generated'
 import { toast } from "sonner"
 import { useRouter } from 'next/navigation'
 
 const Page = () => {
     const { push } = useRouter()
     const formSchema = z.object({
-        username: z.string().min(3, { message: 'min length 3' }).max(20, { message: 'min length 20' }),
         email: z.string().email({ message: 'no valid email' }),
         password: z.string().min(3, { message: 'min length 3' })
     })
@@ -24,16 +23,14 @@ const Page = () => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: 'test@test.com',
-            username: 'Name',
             password: '12'
         },
     })
-    const [signUp, { data, error, }] = useSignUpMutation({
+    const [signUp, { data, error,}] = useSignInMutation({
         variables: {
             input: {
                 email: form.getValues().email,
-                username: form.getValues().username,
-                password: form.getValues().password
+                password: form.getValues().password,
             }
         }
     })
@@ -43,30 +40,17 @@ const Page = () => {
     if (error) {
         toast.error(error.message)
     }
-    if(data) {
-        toast.success('You are register')
-        push(PAGES.SIGN_IN)
+    if (data) {
+        toast.success('You are login')
+       push(PAGES.HOME)
     }
     return (
         <Card className='max-w-[400px] py-2 px-4 mx-auto mt-[100px]'>
             <CardHeader className='text-center'>
-                <CardTitle>Register</CardTitle>
+                <CardTitle>Log in</CardTitle>
             </CardHeader>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-2'>
-                    <FormField
-                        control={form.control}
-                        name='username'
-                        render={({ field }) => (
-                            <>
-                                <FormLabel >Username</FormLabel>
-                                <FormControl>
-                                    <Input className='placeholder:text-white/20' placeholder='username' type='text' {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </>
-                        )}
-                    />
                     <FormField
                         control={form.control}
                         name='email'

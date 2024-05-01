@@ -1,4 +1,3 @@
-
 query getProfile($id: String!) {
   profile(id: $id) {
     id
@@ -7,8 +6,17 @@ query getProfile($id: String!) {
 }
 mutation signUp($input: UserInputSigUp!) {
   signUp(input: $input) {
-    id 
-    email 
+    id
+    email
     username
+  }
+}
+mutation signIn($input: UserInputSigIn!) {
+  signIn(input: $input) {
+    id
+    email
+    username
+    profilePicturer
+    createdAt
   }
 }
