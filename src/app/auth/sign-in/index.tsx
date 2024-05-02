@@ -42,7 +42,7 @@ const Page = () => {
     }
     if (data) {
         toast.success('You are login')
-       push(PAGES.HOME)
+       push(PAGES.PROFILE)
     }
     return (
         <Card className='max-w-[400px] py-2 px-4 mx-auto mt-[100px]'>

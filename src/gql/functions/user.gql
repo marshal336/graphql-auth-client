@@ -20,3 +20,11 @@ mutation signIn($input: UserInputSigIn!) {
     createdAt
   }
 }
+mutation Update($input: UserInputUpdate!, $profilePicturer: Upload!) {
+  updade(input: $input, profilePicturer: $profilePicturer) {
+    id
+    password
+    email
+    updatedAt
+  }
+}

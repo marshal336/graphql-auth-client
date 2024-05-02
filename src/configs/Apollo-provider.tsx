@@ -8,6 +8,9 @@ const ApolloClientProvider = ({ children }: { children: React.ReactNode }) => {
         uri: 'http://localhost:5500/graphql',
         cache: new InMemoryCache(),
         credentials: 'include',
+        headers: {
+            apolloRequirePreflight: 'include'
+        }
     });
     return (
         <ApolloProvider client={client}>

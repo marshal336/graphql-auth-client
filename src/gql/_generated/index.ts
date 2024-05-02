@@ -16,6 +16,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  Upload: { input: any; output: any; }
 };
 
 export type Mutation = {
@@ -38,6 +39,7 @@ export type MutationSignUpArgs = {
 
 export type MutationUpdadeArgs = {
   input: UserInputUpdate;
+  profilePicturer: Scalars['Upload']['input'];
 };
 
 export type Query = {
@@ -75,7 +77,6 @@ export type UserInputSigUp = {
 export type UserInputUpdate = {
   email?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
-  profilePicturer?: InputMaybe<Scalars['String']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -100,6 +101,14 @@ export type SignInMutationVariables = Exact<{
 
 export type SignInMutation = { __typename?: 'Mutation', signIn: { __typename?: 'User', id: string, email: string, username: string, profilePicturer?: string | null, createdAt: string } };
 
+export type UpdateMutationVariables = Exact<{
+  input: UserInputUpdate;
+  profilePicturer: Scalars['Upload']['input'];
+}>;
+
+
+export type UpdateMutation = { __typename?: 'Mutation', updade: { __typename?: 'User', id: string, password: string, email: string, updatedAt: string } };
+
 
 export const GetProfileDocument = gql`
     query getProfile($id: String!) {
@@ -110,17 +119,17 @@ export const GetProfileDocument = gql`
 }
     `;
 export type GetProfileProps<TChildProps = {}, TDataName extends string = 'data'> = {
-  [key in TDataName]: ApolloReactHoc.DataValue<GetProfileQuery, GetProfileQueryVariables>
-} & TChildProps;
+      [key in TDataName]: ApolloReactHoc.DataValue<GetProfileQuery, GetProfileQueryVariables>
+    } & TChildProps;
 export function withGetProfile<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   GetProfileQuery,
   GetProfileQueryVariables,
   GetProfileProps<TChildProps, TDataName>>) {
-  return ApolloReactHoc.withQuery<TProps, GetProfileQuery, GetProfileQueryVariables, GetProfileProps<TChildProps, TDataName>>(GetProfileDocument, {
-    alias: 'getProfile',
-    ...operationOptions
-  });
+    return ApolloReactHoc.withQuery<TProps, GetProfileQuery, GetProfileQueryVariables, GetProfileProps<TChildProps, TDataName>>(GetProfileDocument, {
+      alias: 'getProfile',
+      ...operationOptions
+    });
 };
 
 /**
@@ -139,18 +148,18 @@ export function withGetProfile<TProps, TChildProps = {}, TDataName extends strin
  *   },
  * });
  */
-export function useGetProfileQuery(baseOptions: Apollo.QueryHookOptions<GetProfileQuery, GetProfileQueryVariables> & ({ variables: GetProfileQueryVariables; skip?: boolean; } | { skip: boolean; })) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, options);
-}
+export function useGetProfileQuery(baseOptions: Apollo.QueryHookOptions<GetProfileQuery, GetProfileQueryVariables> & ({ variables: GetProfileQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, options);
+      }
 export function useGetProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProfileQuery, GetProfileQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, options);
+        }
 export function useGetProfileSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetProfileQuery, GetProfileQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, options);
+        }
 export type GetProfileQueryHookResult = ReturnType<typeof useGetProfileQuery>;
 export type GetProfileLazyQueryHookResult = ReturnType<typeof useGetProfileLazyQuery>;
 export type GetProfileSuspenseQueryHookResult = ReturnType<typeof useGetProfileSuspenseQuery>;
@@ -166,17 +175,17 @@ export const SignUpDocument = gql`
     `;
 export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMutationVariables>;
 export type SignUpProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-  [key in TDataName]: Apollo.MutationFunction<SignUpMutation, SignUpMutationVariables>
-} & TChildProps;
+      [key in TDataName]: Apollo.MutationFunction<SignUpMutation, SignUpMutationVariables>
+    } & TChildProps;
 export function withSignUp<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   SignUpMutation,
   SignUpMutationVariables,
   SignUpProps<TChildProps, TDataName>>) {
-  return ApolloReactHoc.withMutation<TProps, SignUpMutation, SignUpMutationVariables, SignUpProps<TChildProps, TDataName>>(SignUpDocument, {
-    alias: 'signUp',
-    ...operationOptions
-  });
+    return ApolloReactHoc.withMutation<TProps, SignUpMutation, SignUpMutationVariables, SignUpProps<TChildProps, TDataName>>(SignUpDocument, {
+      alias: 'signUp',
+      ...operationOptions
+    });
 };
 
 /**
@@ -197,9 +206,9 @@ export function withSignUp<TProps, TChildProps = {}, TDataName extends string = 
  * });
  */
 export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignUpMutation, SignUpMutationVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, options);
+      }
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
@@ -216,17 +225,17 @@ export const SignInDocument = gql`
     `;
 export type SignInMutationFn = Apollo.MutationFunction<SignInMutation, SignInMutationVariables>;
 export type SignInProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-  [key in TDataName]: Apollo.MutationFunction<SignInMutation, SignInMutationVariables>
-} & TChildProps;
+      [key in TDataName]: Apollo.MutationFunction<SignInMutation, SignInMutationVariables>
+    } & TChildProps;
 export function withSignIn<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   SignInMutation,
   SignInMutationVariables,
   SignInProps<TChildProps, TDataName>>) {
-  return ApolloReactHoc.withMutation<TProps, SignInMutation, SignInMutationVariables, SignInProps<TChildProps, TDataName>>(SignInDocument, {
-    alias: 'signIn',
-    ...operationOptions
-  });
+    return ApolloReactHoc.withMutation<TProps, SignInMutation, SignInMutationVariables, SignInProps<TChildProps, TDataName>>(SignInDocument, {
+      alias: 'signIn',
+      ...operationOptions
+    });
 };
 
 /**
@@ -247,9 +256,59 @@ export function withSignIn<TProps, TChildProps = {}, TDataName extends string = 
  * });
  */
 export function useSignInMutation(baseOptions?: Apollo.MutationHookOptions<SignInMutation, SignInMutationVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<SignInMutation, SignInMutationVariables>(SignInDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignInMutation, SignInMutationVariables>(SignInDocument, options);
+      }
 export type SignInMutationHookResult = ReturnType<typeof useSignInMutation>;
 export type SignInMutationResult = Apollo.MutationResult<SignInMutation>;
 export type SignInMutationOptions = Apollo.BaseMutationOptions<SignInMutation, SignInMutationVariables>;
+export const UpdateDocument = gql`
+    mutation Update($input: UserInputUpdate!, $profilePicturer: Upload!) {
+  updade(input: $input, profilePicturer: $profilePicturer) {
+    id
+    password
+    email
+    updatedAt
+  }
+}
+    `;
+export type UpdateMutationFn = Apollo.MutationFunction<UpdateMutation, UpdateMutationVariables>;
+export type UpdateProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: Apollo.MutationFunction<UpdateMutation, UpdateMutationVariables>
+    } & TChildProps;
+export function withUpdate<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  UpdateMutation,
+  UpdateMutationVariables,
+  UpdateProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, UpdateMutation, UpdateMutationVariables, UpdateProps<TChildProps, TDataName>>(UpdateDocument, {
+      alias: 'update',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useUpdateMutation__
+ *
+ * To run a mutation, you first call `useUpdateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMutation, { data, loading, error }] = useUpdateMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *      profilePicturer: // value for 'profilePicturer'
+ *   },
+ * });
+ */
+export function useUpdateMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMutation, UpdateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateMutation, UpdateMutationVariables>(UpdateDocument, options);
+      }
+export type UpdateMutationHookResult = ReturnType<typeof useUpdateMutation>;
+export type UpdateMutationResult = Apollo.MutationResult<UpdateMutation>;
+export type UpdateMutationOptions = Apollo.BaseMutationOptions<UpdateMutation, UpdateMutationVariables>;
