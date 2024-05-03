@@ -14,36 +14,33 @@ import { CiLogout } from "react-icons/ci";
 
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface IState {
-  username: string;
-  email: string;
-  password: string;
-  profilePeicture: string;
-}
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { Input } from '~/components/ui/input';
+import { Button } from '~/components/ui/button';
 
 const Profile = () => {
-  const [state, setState] = React.useState<Partial<IState>>({
-    username: '',
-    email: '',
-    password: '',
-    profilePeicture: ''
-  })
+  const logoRef = React.useRef<HTMLInputElement>(null)
+  const [username, setUsername] = React.useState('')
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [profilePicturer, setProfilePeicture] = React.useState('')
+
   const [update, { data, error }] = useUpdateMutation({
     variables: {
-      profilePicturer: state.profilePeicture,
+      profilePicturer,
       input: {
-        email: state.email,
-        password: state.password,
-        username: state.username,
+        email,
+        password,
+        username,
       }
     }
   })
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setState({ profilePeicture: e.target.files[0].name })
+      setProfilePeicture(e.target.files[0].name)
     }
   };
+  console.log(data);
 
   return (
     <div className='w-full'>
@@ -77,28 +74,36 @@ const Profile = () => {
       <div className="relative top-[160px] left-[176px]">
         <div className="flex gap-10 items-center">
           <div className="w-[180px] h-[180px] bg-slate-400 rounded-full border-[8px] border-white relative">
-            <CiCamera className='cursor-pointer absolute bottom-0 right-0 bg-slate-400 text-5xl p-2 rounded-full border-[3px] border-white' />
+            <CiCamera onClick={() => logoRef.current?.click()} className='cursor-pointer absolute bottom-0 right-0 bg-slate-400 text-5xl p-2 rounded-full border-[3px] border-white' />
           </div>
+          <input type="file" ref={logoRef} onChange={handleChangeFile} hidden />
           <div className="flex flex-col">
             <h1 className='text-4xl'>Username</h1>
             <p className='text-base'>Your account is ready, you can now apply for advice.</p>
           </div>
         </div>
       </div>
-      <div className="flex justify-center gap-[96px] relative top-[300px]">
-        <div className="flex flex-col w-[217px] h-[416px] bg-slate-100 text-black">
-          {[...new Array(3)].map((_, i) => (
-            <div className="p-4 font-bold active:bg-neutral-700" key={i}>sds</div>
-          ))}
+      <Tabs className="flex justify-center gap-[96px] relative top-[300px]">
+        <div className="flex flex-col w-[217px] h-[416px]">
+          <TabsList defaultValue={'edit'}>
+            <TabsTrigger value="edit">Edit Profile</TabsTrigger>
+            <TabsTrigger disabled value="notifications">Notifications</TabsTrigger>
+            <TabsTrigger disabled value="choose">Choose Plan</TabsTrigger>
+            <TabsTrigger disabled value="password">Password & Security</TabsTrigger>
+          </TabsList>
         </div>
-        <div className="flex flex-col gap-10">
-          <h2>Edit Profile</h2>
-          <div className="flex gap-14 h-full">
-            <div className="w-[500px] bg-slate-300">sdsds</div>
-            <div className="w-[500px] bg-slate-300">sd</div>
+        <TabsContent value='edit' className='flex flex-col gap-3'>
+          <h2 className='text-3xl'>Edit Profile</h2>
+          <div className="flex flex-col gap-10 h-[543px] w-[543px]">
+            <div className="flex flex-col gap-5 h-full">
+              <Input placeholder='username' type='text' onChange={(e) => setUsername(e.target.value)} />
+              <Input placeholder='email' type='email' onChange={(e) => setEmail(e.target.value)} />
+              <Input placeholder='password' type='password' onChange={(e) => setPassword(e.target.value)} />
+              <Button onClick={() => update()} className='max-w-[100px]' type='submit'>Save</Button>
+            </div>
           </div>
-        </div>
-      </div>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
